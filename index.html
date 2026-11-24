@@ -1,0 +1,2226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planificación Diaria de Clase — Colegio Montano (Plan N.° 12)</title>
+  <style>
+    /* ==========================================================================
+       SISTEMA DE DISEÑO INSTITUCIONAL — COLEGIO MONTANO
+       Paleta estricta:
+       - Azul institucional: #1F3C88
+       - Azul secundario:    #3F72AF
+       - Blanco:             #FFFFFF
+       - Amarillo inst.:     #F2C94C
+       ========================================================================== */
+    :root {
+      --azul-institucional: #1F3C88;
+      --azul-secundario: #3F72AF;
+      --blanco: #FFFFFF;
+      --amarillo-institucional: #F2C94C;
+      --borde-suave: rgba(63, 114, 175, 0.22);
+      --fondo-tinte-azul: rgba(63, 114, 175, 0.05);
+      --fondo-tinte-amarillo: rgba(242, 201, 76, 0.16);
+      --texto-oscuro: #16264C;
+      --texto-secundario: #334770;
+      --sombra-card: 0 4px 14px rgba(31, 60, 136, 0.07);
+      --radio: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #F5F8FC;
+      color: var(--texto-oscuro);
+      line-height: 1.55;
+      font-size: 15px;
+      padding-bottom: 48px;
+    }
+
+    /* Barra de herramientas superior */
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: var(--blanco);
+      border-bottom: 2px solid var(--azul-secundario);
+      padding: 10px 20px;
+      box-shadow: 0 2px 10px rgba(31, 60, 136, 0.08);
+    }
+
+    .toolbar-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .toolbar-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--azul-institucional);
+      font-weight: 600;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--amarillo-institucional);
+      border: 1.5px solid var(--azul-institucional);
+      display: inline-block;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+    }
+
+    .btn-primary:hover {
+      background-color: #172E6B;
+    }
+
+    .btn-secondary {
+      background-color: var(--azul-secundario);
+      color: var(--blanco);
+    }
+
+    .btn-secondary:hover {
+      background-color: #325D91;
+    }
+
+    .btn-accent {
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      border-color: var(--azul-institucional);
+    }
+
+    .btn-accent:hover {
+      background-color: #E8BC35;
+    }
+
+    .btn-outline {
+      background-color: var(--blanco);
+      color: var(--azul-institucional);
+      border-color: var(--azul-secundario);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--fondo-tinte-azul);
+    }
+
+    /* Botones de navegación rápida entre las 9 secciones */
+    .quick-nav {
+      background-color: var(--blanco);
+      border: 1px solid var(--borde-suave);
+      border-radius: var(--radio);
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      box-shadow: var(--sombra-card);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .quick-nav-label {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--azul-secundario);
+      margin-right: 4px;
+    }
+
+    .quick-nav-link {
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--azul-institucional);
+      background-color: var(--fondo-tinte-azul);
+      border: 1px solid var(--borde-suave);
+      padding: 5px 10px;
+      border-radius: 6px;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .quick-nav-link:hover {
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+    }
+
+    /* Contenedor principal */
+    .container {
+      max-width: 1140px;
+      margin: 22px auto 0;
+      padding: 0 16px;
+    }
+
+    /* Encabezado Institucional */
+    .inst-header {
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+      border-radius: var(--radio);
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      border-bottom: 6px solid var(--amarillo-institucional);
+      box-shadow: var(--sombra-card);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .inst-brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .inst-crest {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      background-color: var(--blanco);
+      color: var(--azul-institucional);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 22px;
+      border: 3px solid var(--amarillo-institucional);
+      flex-shrink: 0;
+    }
+
+    .inst-title-group h1 {
+      font-size: 24px;
+      letter-spacing: 0.3px;
+      font-weight: 800;
+      color: var(--blanco);
+      line-height: 1.2;
+    }
+
+    .inst-title-group p {
+      font-size: 14px;
+      color: var(--amarillo-institucional);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .time-summary-box {
+      background-color: var(--blanco);
+      color: var(--azul-institucional);
+      padding: 12px 18px;
+      border-radius: 8px;
+      border-left: 5px solid var(--amarillo-institucional);
+      text-align: right;
+      min-width: 215px;
+    }
+
+    .time-summary-box .label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--azul-secundario);
+      font-weight: 700;
+    }
+
+    .time-summary-box .value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--azul-institucional);
+    }
+
+    .time-summary-box .sub {
+      font-size: 12px;
+      color: var(--texto-secundario);
+      margin-top: 2px;
+    }
+
+    .time-warning {
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 11.5px;
+    }
+
+    /* Tarjetas de sección */
+    .card {
+      background-color: var(--blanco);
+      border-radius: var(--radio);
+      border: 1px solid var(--borde-suave);
+      box-shadow: var(--sombra-card);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      background-color: var(--azul-secundario);
+      color: var(--blanco);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .card-header.primary-header {
+      background-color: var(--azul-institucional);
+    }
+
+    .card-header h2 {
+      font-size: 16.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-num {
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      font-weight: 800;
+      font-size: 13px;
+      padding: 2px 9px;
+      border-radius: 6px;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    /* Campos editables */
+    [contenteditable="true"] {
+      outline: none;
+      border-radius: 5px;
+      padding: 3px 6px;
+      transition: background-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    [contenteditable="true"]:hover {
+      background-color: var(--fondo-tinte-azul);
+    }
+
+    [contenteditable="true"]:focus {
+      background-color: var(--blanco);
+      box-shadow: 0 0 0 2px var(--amarillo-institucional);
+    }
+
+    /* Grid de Datos Generales */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+
+    .meta-item {
+      border: 1px solid var(--borde-suave);
+      border-left: 4px solid var(--azul-secundario);
+      border-radius: 8px;
+      padding: 10px 12px;
+      background-color: var(--blanco);
+    }
+
+    .meta-item.highlight-meta {
+      border-left-color: var(--amarillo-institucional);
+      background-color: var(--fondo-tinte-amarillo);
+    }
+
+    .meta-label {
+      font-size: 11.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--azul-secundario);
+      letter-spacing: 0.4px;
+      margin-bottom: 3px;
+    }
+
+    .meta-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--azul-institucional);
+    }
+
+    /* Competencia y Logro */
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .comp-box {
+      border: 1.5px solid var(--borde-suave);
+      border-radius: 8px;
+      padding: 16px;
+      background-color: var(--blanco);
+    }
+
+    .comp-box-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--azul-institucional);
+      background-color: var(--amarillo-institucional);
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .comp-text {
+      font-size: 15px;
+      color: var(--texto-oscuro);
+      line-height: 1.6;
+    }
+
+    /* Competencias clave y blandas */
+    .skills-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .skill-group-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--azul-institucional);
+      border-bottom: 2px solid var(--amarillo-institucional);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .skill-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid var(--borde-suave);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      background-color: var(--blanco);
+    }
+
+    .skill-item.inactive-skill {
+      opacity: 0.6;
+      background-color: var(--fondo-tinte-azul);
+    }
+
+    .skill-item input[type="checkbox"] {
+      margin-top: 4px;
+      width: 17px;
+      height: 17px;
+      accent-color: var(--azul-institucional);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .skill-content strong {
+      color: var(--azul-institucional);
+      display: block;
+      font-size: 14.5px;
+    }
+
+    .skill-content p {
+      font-size: 13.5px;
+      color: var(--texto-secundario);
+      margin-top: 2px;
+    }
+
+    /* Hábitos Montano */
+    .habits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 14px;
+    }
+
+    .habit-card {
+      border: 1px solid var(--borde-suave);
+      border-top: 4px solid var(--amarillo-institucional);
+      border-radius: 8px;
+      padding: 14px;
+      background-color: var(--blanco);
+    }
+
+    .habit-badge {
+      display: inline-block;
+      background-color: var(--azul-institucional);
+      color: var(--amarillo-institucional);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 5px;
+      margin-bottom: 8px;
+    }
+
+    .habit-title {
+      font-weight: 700;
+      color: var(--azul-institucional);
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .habit-desc {
+      font-size: 13.8px;
+      color: var(--texto-secundario);
+    }
+
+    /* Navegación Secuencia Didáctica */
+    .seq-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      background-color: var(--fondo-tinte-azul);
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--borde-suave);
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      flex: 1 1 160px;
+      background-color: var(--blanco);
+      color: var(--azul-institucional);
+      border: 1.5px solid var(--azul-secundario);
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      background-color: var(--fondo-tinte-azul);
+    }
+
+    .tab-btn.active {
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+      border-color: var(--azul-institucional);
+    }
+
+    .tab-btn .tab-code {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .tab-btn .tab-time {
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      font-size: 12px;
+      padding: 2px 7px;
+      border-radius: 12px;
+      font-weight: 800;
+    }
+
+    .tab-btn .tab-name {
+      font-size: 12.5px;
+      margin-top: 3px;
+      opacity: 0.92;
+    }
+
+    /* Barra de distribución visual de 50 minutos */
+    .timeline-bar {
+      display: flex;
+      height: 12px;
+      border-radius: 999px;
+      overflow: hidden;
+      background-color: var(--fondo-tinte-azul);
+      border: 1px solid var(--borde-suave);
+      margin-bottom: 18px;
+    }
+
+    .tl-seg-im { background-color: var(--amarillo-institucional); }
+    .tl-seg-tp { background-color: var(--azul-secundario); }
+    .tl-seg-tc { background-color: var(--azul-institucional); }
+    .tl-seg-p  { background-color: #6B94C6; }
+
+    /* Bloques de momento didáctico */
+    .moment-panel {
+      display: none;
+      border: 1.5px solid var(--azul-secundario);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 18px;
+      background-color: var(--blanco);
+    }
+
+    .moment-panel.active-panel {
+      display: block;
+    }
+
+    .moment-banner {
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+      padding: 14px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 4px solid var(--amarillo-institucional);
+    }
+
+    .moment-banner h3 {
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .moment-time-control {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .moment-time-input {
+      width: 46px;
+      border: 1.5px solid var(--azul-institucional);
+      border-radius: 5px;
+      text-align: center;
+      font-weight: 800;
+      color: var(--azul-institucional);
+      background-color: var(--blanco);
+      padding: 2px;
+      font-size: 14px;
+    }
+
+    .moment-content {
+      padding: 18px;
+    }
+
+    .moment-meta-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .moment-info-box {
+      background-color: var(--fondo-tinte-azul);
+      border-left: 4px solid var(--azul-secundario);
+      padding: 10px 14px;
+      border-radius: 6px;
+    }
+
+    .moment-info-box.yellow-box {
+      background-color: var(--fondo-tinte-amarillo);
+      border-left-color: var(--amarillo-institucional);
+    }
+
+    .moment-info-box h4 {
+      font-size: 12.5px;
+      text-transform: uppercase;
+      color: var(--azul-institucional);
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .steps-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 14px;
+    }
+
+    .steps-table th {
+      background-color: var(--azul-secundario);
+      color: var(--blanco);
+      text-align: left;
+      padding: 10px 12px;
+      font-weight: 700;
+    }
+
+    .steps-table td {
+      border: 1px solid var(--borde-suave);
+      padding: 10px 12px;
+      vertical-align: top;
+    }
+
+    .time-pill {
+      display: inline-block;
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      font-weight: 800;
+      font-size: 12.5px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      white-space: nowrap;
+    }
+
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .role-card {
+      border: 1px solid var(--borde-suave);
+      border-radius: 8px;
+      padding: 10px 12px;
+      background-color: var(--blanco);
+    }
+
+    .role-card strong {
+      color: var(--azul-institucional);
+      display: block;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    /* Recursos Didácticos */
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .resource-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border: 1px solid var(--borde-suave);
+      border-radius: 8px;
+      padding: 11px 13px;
+      background-color: var(--blanco);
+    }
+
+    .resource-icon {
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      font-weight: 800;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 14px;
+    }
+
+    /* Evaluación */
+    .eval-stages {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .eval-stage-card {
+      border: 1px solid var(--borde-suave);
+      border-radius: 8px;
+      padding: 14px;
+      background-color: var(--blanco);
+    }
+
+    .eval-tag {
+      display: inline-block;
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 5px;
+      margin-bottom: 8px;
+    }
+
+    .tag-formativa {
+      background-color: var(--azul-secundario);
+      color: var(--blanco);
+    }
+
+    .tag-calificada {
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+    }
+
+    .feedback-box {
+      background-color: var(--fondo-tinte-amarillo);
+      border: 1.5px solid var(--amarillo-institucional);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+
+    /* Instrumento de evaluación interactivo */
+    .rubric-controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background-color: var(--fondo-tinte-azul);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      border: 1px solid var(--borde-suave);
+    }
+
+    .student-eval-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .student-eval-field label {
+      font-weight: 700;
+      color: var(--azul-institucional);
+      font-size: 14px;
+    }
+
+    .student-eval-input {
+      border: 1.5px solid var(--azul-secundario);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 14px;
+      color: var(--texto-oscuro);
+      background-color: var(--blanco);
+      min-width: 220px;
+    }
+
+    .score-display {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .score-badge {
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .level-badge {
+      background-color: var(--amarillo-institucional);
+      color: var(--azul-institucional);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .checklist-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .checklist-table th {
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .checklist-table th.center,
+    .checklist-table td.center {
+      text-align: center;
+    }
+
+    .checklist-table td {
+      border: 1px solid var(--borde-suave);
+      padding: 10px 12px;
+    }
+
+    .checklist-table tr:nth-child(even) {
+      background-color: var(--fondo-tinte-azul);
+    }
+
+    .radio-eval {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--azul-institucional);
+      cursor: pointer;
+    }
+
+    /* Observaciones docentes */
+    .obs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .obs-box {
+      border: 1px solid var(--borde-suave);
+      border-radius: 8px;
+      padding: 14px;
+      background-color: var(--blanco);
+    }
+
+    .obs-box h3 {
+      font-size: 14.5px;
+      color: var(--azul-institucional);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .obs-area {
+      min-height: 92px;
+      border: 1px dashed var(--azul-secundario);
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 14px;
+      color: var(--texto-oscuro);
+      background-color: var(--blanco);
+    }
+
+    /* Modal personalizado (sin alert/confirm) */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background-color: rgba(22, 38, 76, 0.55);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background-color: var(--blanco);
+      border-radius: 12px;
+      max-width: 440px;
+      width: 100%;
+      border-top: 6px solid var(--amarillo-institucional);
+      box-shadow: 0 12px 30px rgba(31, 60, 136, 0.25);
+      overflow: hidden;
+    }
+
+    .modal-body {
+      padding: 22px;
+    }
+
+    .modal-body h3 {
+      color: var(--azul-institucional);
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .modal-body p {
+      color: var(--texto-secundario);
+      font-size: 14.5px;
+      margin-bottom: 18px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* Notificación Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--azul-institucional);
+      color: var(--blanco);
+      border-left: 5px solid var(--amarillo-institucional);
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(31, 60, 136, 0.25);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    /* Responsividad móvil */
+    @media (max-width: 640px) {
+      .inst-header {
+        padding: 18px;
+      }
+      .inst-title-group h1 {
+        font-size: 20px;
+      }
+      .time-summary-box {
+        width: 100%;
+        text-align: left;
+      }
+      .toolbar-actions {
+        width: 100%;
+      }
+      .toolbar-actions .btn {
+        flex: 1 1 auto;
+        justify-content: center;
+      }
+    }
+
+    /* ==========================================================================
+       ESTILOS DE IMPRESIÓN / EXPORTACIÓN PDF LIMPIA
+       ========================================================================== */
+    @media print {
+      @page {
+        size: letter;
+        margin: 12mm;
+      }
+
+      body {
+        background-color: var(--blanco) !important;
+        padding-bottom: 0;
+        font-size: 12.5px;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .toolbar,
+      .quick-nav,
+      .seq-nav,
+      .no-print,
+      .modal-backdrop,
+      .toast {
+        display: none !important;
+      }
+
+      .container {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .card,
+      .inst-header,
+      .moment-panel {
+        box-shadow: none !important;
+        break-inside: avoid;
+      }
+
+      .moment-panel {
+        display: block !important;
+        margin-bottom: 14px !important;
+      }
+
+      .moment-time-input,
+      .student-eval-input {
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA DE HERRAMIENTAS INTERACTIVA -->
+  <header class="toolbar no-print">
+    <div class="toolbar-inner">
+      <div class="toolbar-status">
+        <span class="status-dot"></span>
+        <span id="save-status">Plan N.° 12 listo • Edición directa habilitada</span>
+      </div>
+      <div class="toolbar-actions">
+        <button type="button" class="btn btn-primary" id="btn-save" title="Guardar cambios en este navegador">
+          Guardar en navegador
+        </button>
+        <button type="button" class="btn btn-secondary" id="btn-export" title="Descargar archivo HTML con los datos editados">
+          Exportar HTML
+        </button>
+        <button type="button" class="btn btn-accent" id="btn-print" title="Imprimir o guardar como PDF">
+          Imprimir / Guardar PDF
+        </button>
+        <button type="button" class="btn btn-outline" id="btn-reset" title="Restaurar valores originales">
+          Restablecer
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" id="plan-root">
+
+    <!-- BOTONES DE NAVEGACIÓN RÁPIDA ENTRE LAS 9 SECCIONES -->
+    <nav class="quick-nav no-print" aria-label="Navegación entre secciones del plan">
+      <span class="quick-nav-label">Secciones:</span>
+      <a href="#sec-1" class="quick-nav-link">1. Datos</a>
+      <a href="#sec-2" class="quick-nav-link">2. Competencia y Logro</a>
+      <a href="#sec-3" class="quick-nav-link">3. Competencias</a>
+      <a href="#sec-4" class="quick-nav-link">4. Hábitos</a>
+      <a href="#sec-5" class="quick-nav-link">5. IM–TP–TC–P</a>
+      <a href="#sec-6" class="quick-nav-link">6. Recursos</a>
+      <a href="#sec-7" class="quick-nav-link">7. Evaluación</a>
+      <a href="#sec-8" class="quick-nav-link">8. Lista de Cotejo</a>
+      <a href="#sec-9" class="quick-nav-link">9. Observaciones</a>
+    </nav>
+
+    <!-- 1. ENCABEZADO INSTITUCIONAL Y DATOS GENERALES -->
+    <section class="inst-header" id="sec-1">
+      <div class="inst-brand">
+        <div class="inst-crest" aria-hidden="true">CM</div>
+        <div class="inst-title-group">
+          <h1 contenteditable="true" data-field="colegio_titulo">Colegio Montano</h1>
+          <p contenteditable="true" data-field="subtitulo_plan">Plan Diario de Clase N.° 12 • Modelo Formativo por Competencias</p>
+        </div>
+      </div>
+      <div class="time-summary-box">
+        <div class="label">Duración Total de Sesión</div>
+        <div class="value"><span id="total-minutes-display">50</span> minutos</div>
+        <div class="sub" id="breakdown-display">IM 8' • TP 15' • TC 20' • P 7'</div>
+        <div class="time-warning" id="time-warning" style="display: none;">Ajustar suma a 50 min</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header primary-header">
+        <h2><span class="section-num">1</span> Datos Generales de la Clase</h2>
+        <span style="font-size: 12.5px; color: var(--amarillo-institucional); font-weight: 600;">Haga clic sobre cualquier campo para editar</span>
+      </div>
+      <div class="card-body">
+        <div class="meta-grid">
+          <div class="meta-item">
+            <div class="meta-label">Colegio</div>
+            <div class="meta-value" contenteditable="true" data-field="colegio">Montano</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Modalidad</div>
+            <div class="meta-value" contenteditable="true" data-field="modalidad">Presencial</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Materia</div>
+            <div class="meta-value" contenteditable="true" data-field="materia">Comunicación y Lenguaje</div>
+          </div>
+          <div class="meta-item highlight-meta">
+            <div class="meta-label">Tema de la Sesión</div>
+            <div class="meta-value" contenteditable="true" data-field="tema">M antes de B y P</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Grado</div>
+            <div class="meta-value" contenteditable="true" data-field="grado">Tercero primaria</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Unidad</div>
+            <div class="meta-value" contenteditable="true" data-field="unidad">1</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Número de Plan</div>
+            <div class="meta-value" contenteditable="true" data-field="num_plan">12</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Fecha</div>
+            <div class="meta-value" contenteditable="true" data-field="fecha">Febrero 2027</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Docente</div>
+            <div class="meta-value" contenteditable="true" data-field="docente">Sara Rivera</div>
+          </div>
+          <div class="meta-item highlight-meta">
+            <div class="meta-label">Duración</div>
+            <div class="meta-value" contenteditable="true" data-field="duracion_texto">50 minutos</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. COMPETENCIA Y LOGRO DE APRENDIZAJE -->
+    <section class="card" id="sec-2">
+      <div class="card-header">
+        <h2><span class="section-num">2</span> Competencia y Logro de Aprendizaje</h2>
+      </div>
+      <div class="card-body">
+        <div class="comp-grid">
+          <div class="comp-box">
+            <div class="comp-box-title">Competencia de Aprendizaje</div>
+            <p class="comp-text" contenteditable="true" data-field="competencia">
+              Aplica la regla ortográfica del uso de la letra <strong>m</strong> antes de <strong>b</strong> y <strong>p</strong> al analizar, corregir y redactar textos breves y mensajes cotidianos, asegurando la claridad y corrección escrita en diversas situaciones comunicativas.
+            </p>
+          </div>
+          <div class="comp-box">
+            <div class="comp-box-title">Logro de Aprendizaje (50 minutos)</div>
+            <p class="comp-text" contenteditable="true" data-field="logro">
+              Al finalizar los 50 minutos de clase, el estudiante de tercero primaria identifica y corrige al menos el 85 % de los errores de <em>nb/np</em> en un texto breve durante su «Expediente de Detective Ortográfico», construye en equipo un afiche informativo con seis palabras que emplean correctamente <em>mb</em> y <em>mp</em>, y resuelve con éxito su Ticket de Salida individual.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. COMPETENCIAS CLAVE Y BLANDAS -->
+    <section class="card" id="sec-3">
+      <div class="card-header">
+        <h2><span class="section-num">3</span> Competencias Clave y Competencias Blandas a Desarrollar</h2>
+      </div>
+      <div class="card-body">
+        <div class="skills-columns">
+          <!-- Competencias Clave -->
+          <div>
+            <h3 class="skill-group-title">Competencias Clave</h3>
+            <div class="skill-item">
+              <input type="checkbox" checked data-skill="cc_critico" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cc1_t">Pensamiento crítico</strong>
+                <p contenteditable="true" data-field="cc1_d">Analiza la articulación labial al pronunciar palabras con <em>mb</em> y <em>mp</em> para justificar por qué la letra <em>n</em> no corresponde antes de sonidos bilabiales.</p>
+              </div>
+            </div>
+            <div class="skill-item">
+              <input type="checkbox" checked data-skill="cc_problemas" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cc2_t">Resolución de problemas</strong>
+                <p contenteditable="true" data-field="cc2_d">Detecta y repara palabras mal escritas (como <em>canpana, sonbrero, tienpo</em>) dentro del boletín escolar del «Expediente de Detective Ortográfico».</p>
+              </div>
+            </div>
+            <div class="skill-item">
+              <input type="checkbox" checked data-skill="cc_equipo" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cc3_t">Trabajo en equipo</strong>
+                <p contenteditable="true" data-field="cc3_d">Colabora en equipos heterogéneos de 4 integrantes conformados por la docente, cumpliendo un rol específico para diseñar y revisar el afiche editorial.</p>
+              </div>
+            </div>
+            <div class="skill-item">
+              <input type="checkbox" checked data-skill="cc_creatividad" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cc4_t">Creatividad</strong>
+                <p contenteditable="true" data-field="cc4_d">Diseña un afiche escolar visualmente atractivo con un lema original y tres recomendaciones cotidianas que integran palabras con <em>mb</em> y <em>mp</em>.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Competencias Blandas -->
+          <div>
+            <h3 class="skill-group-title">Competencias Blandas</h3>
+            <div class="skill-item">
+              <input type="checkbox" checked data-skill="cb_comunicacion" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cb1_t">Comunicación</strong>
+                <p contenteditable="true" data-field="cb1_d">Argumenta oralmente sus correcciones ortográficas en plenaria y redacta mensajes claros y comprensibles para sus compañeros de grado.</p>
+              </div>
+            </div>
+            <div class="skill-item">
+              <input type="checkbox" checked data-skill="cb_decisiones" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cb2_t">Toma de decisiones</strong>
+                <p contenteditable="true" data-field="cb2_d">Selecciona junto con su equipo las palabras más pertinentes de su banco léxico para construir el mensaje central del afiche sin errores.</p>
+              </div>
+            </div>
+            <div class="skill-item">
+              <input type="checkbox" checked data-skill="cb_flexibilidad" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cb3_t">Flexibilidad</strong>
+                <p contenteditable="true" data-field="cb3_d">Acepta las observaciones del Verificador/a ortográfico y ajusta sus borradores escritos con disposición positiva antes de la publicación final.</p>
+              </div>
+            </div>
+            <div class="skill-item">
+              <input type="checkbox" checked data-skill="cb_emocional" />
+              <div class="skill-content">
+                <strong contenteditable="true" data-field="cb4_t">Inteligencia emocional</strong>
+                <p contenteditable="true" data-field="cb4_d">Brinda retroalimentación respetuosa a sus compañeros durante la «Ronda de Corrección Express» valorando el esfuerzo de cada equipo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. HÁBITOS DEL MODELO FORMATIVO MONTANO -->
+    <section class="card" id="sec-4">
+      <div class="card-header">
+        <h2><span class="section-num">4</span> Hábitos del Modelo Formativo Montano</h2>
+      </div>
+      <div class="card-body">
+        <div class="habits-grid">
+          <div class="habit-card">
+            <span class="habit-badge">Hábito 2</span>
+            <div class="habit-title" contenteditable="true" data-field="hab1_t">Comenzar con un fin en mente</div>
+            <p class="habit-desc" contenteditable="true" data-field="hab1_d">
+              Desde el reto inicial «El Radar de los Labios Juntos», el estudiante comprende que la meta de la sesión es dominar la regla <em>m antes de b y p</em> para escribir textos escolares y cotidianos sin faltas ortográficas.
+            </p>
+          </div>
+          <div class="habit-card">
+            <span class="habit-badge">Hábito 5</span>
+            <div class="habit-title" contenteditable="true" data-field="hab2_t">Buscar primero entender, luego ser entendido</div>
+            <p class="habit-desc" contenteditable="true" data-field="hab2_d">
+              Al revisar el boletín individual y debatir las propuestas en el taller editorial, el alumno escucha primero el razonamiento fonético y ortográfico de sus compañeros antes de corregir o defender una grafía.
+            </p>
+          </div>
+          <div class="habit-card">
+            <span class="habit-badge">Hábito 6</span>
+            <div class="habit-title" contenteditable="true" data-field="hab3_t">Sinergizar</div>
+            <p class="habit-desc" contenteditable="true" data-field="hab3_d">
+              En el «Taller Editorial: Afiches sin Errores de MB y MP», los cuatro roles (Coordinador/a de tiempo, Redactor/a jefe, Verificador/a ortográfico y Vocero/a creativo) combinan sus fortalezas para producir un afiche de alta calidad.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. SECUENCIA DIDÁCTICA INTERACTIVA (50 MINUTOS EXACTOS) -->
+    <section class="card" id="sec-5">
+      <div class="card-header primary-header">
+        <h2><span class="section-num">5</span> Secuencia Didáctica Obligatoria (IM – TP – TC – P = 50 min)</h2>
+        <span style="font-size: 12.5px; color: var(--amarillo-institucional); font-weight: 700;">Navegación por momentos</span>
+      </div>
+      <div class="card-body">
+
+        <!-- Barra proporcional visual de tiempo -->
+        <div class="timeline-bar no-print" title="Distribución de 50 minutos: IM 8', TP 15', TC 20', P 7'">
+          <div class="tl-seg-im" id="bar-im" style="width: 16%;"></div>
+          <div class="tl-seg-tp" id="bar-tp" style="width: 30%;"></div>
+          <div class="tl-seg-tc" id="bar-tc" style="width: 40%;"></div>
+          <div class="tl-seg-p"  id="bar-p"  style="width: 14%;"></div>
+        </div>
+
+        <!-- Pestañas de navegación -->
+        <div class="seq-nav no-print" role="tablist">
+          <button type="button" class="tab-btn active" data-target="all">
+            <div class="tab-code"><span>VER TODOS</span><span class="tab-time" id="tab-total-badge">50 min</span></div>
+            <div class="tab-name">Secuencia completa</div>
+          </button>
+          <button type="button" class="tab-btn" data-target="panel-im">
+            <div class="tab-code"><span>IM</span><span class="tab-time" id="tab-im-badge">8 min</span></div>
+            <div class="tab-name">Introducción Motivante</div>
+          </button>
+          <button type="button" class="tab-btn" data-target="panel-tp">
+            <div class="tab-code"><span>TP</span><span class="tab-time" id="tab-tp-badge">15 min</span></div>
+            <div class="tab-name">Trabajo Personal</div>
+          </button>
+          <button type="button" class="tab-btn" data-target="panel-tc">
+            <div class="tab-code"><span>TC</span><span class="tab-time" id="tab-tc-badge">20 min</span></div>
+            <div class="tab-name">Trabajo Cooperativo</div>
+          </button>
+          <button type="button" class="tab-btn" data-target="panel-p">
+            <div class="tab-code"><span>P</span><span class="tab-time" id="tab-p-badge">7 min</span></div>
+            <div class="tab-name">Plenaria</div>
+          </button>
+        </div>
+
+        <!-- MOMENTO 1: IM (8 minutos: 2' + 3' + 3') -->
+        <article class="moment-panel active-panel" id="panel-im">
+          <div class="moment-banner">
+            <div>
+              <span style="font-size: 12px; color: var(--amarillo-institucional); font-weight: 700; text-transform: uppercase;">Momento 1 • Activación</span>
+              <h3 contenteditable="true" data-field="im_titulo">IM — Introducción Motivante: «El Radar de los Labios Juntos: ¿M o N?»</h3>
+            </div>
+            <div class="moment-time-control">
+              <span>Duración:</span>
+              <input type="number" class="moment-time-input" id="min-im" value="8" min="1" max="50" />
+              <span>min</span>
+            </div>
+          </div>
+          <div class="moment-content">
+            <div class="moment-meta-row">
+              <div class="moment-info-box">
+                <h4>Propósito Didáctico</h4>
+                <p contenteditable="true" data-field="im_proposito">
+                  Activar conocimientos previos sobre el sonido nasal antes de consonantes bilabiales, despertar la curiosidad mediante una experimentación física con la pronunciación y deducir de forma activa la regla ortográfica del uso de <strong>m</strong> antes de <strong>b</strong> y <strong>p</strong>.
+                </p>
+              </div>
+              <div class="moment-info-box yellow-box">
+                <h4>Situación Problema / Pregunta Generadora</h4>
+                <p contenteditable="true" data-field="im_problema">
+                  «El periódico mural de tercero primaria publicó el siguiente titular: <em>“El bonbero tocó la canpana en el canpo”</em>. Al leerlo en voz alta, algo suena bien pero se ve mal escrito. ¿Qué ocurre con nuestros labios justo antes de pronunciar la <strong>b</strong> o la <strong>p</strong>, y qué letra exige nuestro idioma en ese lugar?»
+                </p>
+              </div>
+            </div>
+
+            <table class="steps-table">
+              <thead>
+                <tr>
+                  <th style="width: 120px;">Distribución</th>
+                  <th>Instrucciones Paso a Paso (Actividad Presencial)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="time-pill">2 min (Min 1–2)</span></td>
+                  <td contenteditable="true" data-field="im_paso1">
+                    <strong>El titular con intrusos:</strong> La docente escribe en la pizarra el titular <em>«El bonbero tocó la canpana en el canpo»</em> y muestra tarjetas con las palabras reales (<em>bombero, campana, campo</em>), pidiendo a los estudiantes que identifiquen las letras sospechosas.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="time-pill">3 min (Min 3–5)</span></td>
+                  <td contenteditable="true" data-field="im_paso2">
+                    <strong>Experimento del «Radar de los Labios Juntos»:</strong> Todos pronuncian lentamente <em>ta-m-bor, tro-m-peta, so-m-bra, lá-m-para</em> observando que los labios se cierran por completo (sonido bilabial), a diferencia de <em>ca-n-to</em> o <em>pu-n-to</em> donde la lengua toca el paladar.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="time-pill">3 min (Min 6–8)</span></td>
+                  <td contenteditable="true" data-field="im_paso3">
+                    <strong>Formulación de la regla y meta del día:</strong> Voluntarios pasan a corregir en amarillo el titular de la pizarra, deducen colectivamente la regla <strong>«Siempre se escribe M antes de B y P»</strong> y conocen el objetivo de la sesión (Hábito 2).
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="moment-meta-row">
+              <div class="moment-info-box">
+                <h4>Recursos y Evidencia de Participación</h4>
+                <p contenteditable="true" data-field="im_evidencia">
+                  <strong>Recursos:</strong> Pizarra, marcadores azul y amarillo, y 6 tarjetas didácticas ilustradas con combinaciones <em>mb</em> y <em>mp</em>.<br/>
+                  <strong>Evidencia:</strong> Participación oral en el experimento articulatorio y corrección razonada de las palabras en la pizarra.
+                </p>
+              </div>
+              <div class="moment-info-box yellow-box">
+                <h4>Hábito Formativo Relacionado</h4>
+                <p contenteditable="true" data-field="im_habito">
+                  <strong>Hábito 2 (Comenzar con un fin en mente) y Hábito 5 (Buscar primero entender, luego ser entendido):</strong> El estudiante comprende la razón fonética detrás de la regla antes de aplicarla y establece la meta de escribir sin errores de <em>mb/mp</em>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- MOMENTO 2: TP (15 minutos: 3' + 8' + 4') -->
+        <article class="moment-panel active-panel" id="panel-tp">
+          <div class="moment-banner">
+            <div>
+              <span style="font-size: 12px; color: var(--amarillo-institucional); font-weight: 700; text-transform: uppercase;">Momento 2 • Construcción Individual</span>
+              <h3 contenteditable="true" data-field="tp_titulo">TP — Trabajo Personal: «Expediente de Detective Ortográfico»</h3>
+            </div>
+            <div class="moment-time-control">
+              <span>Duración:</span>
+              <input type="number" class="moment-time-input" id="min-tp" value="15" min="1" max="50" />
+              <span>min</span>
+            </div>
+          </div>
+          <div class="moment-content">
+            <div class="moment-meta-row">
+              <div class="moment-info-box">
+                <h4>Propósito Didáctico</h4>
+                <p contenteditable="true" data-field="tp_proposito">
+                  Desarrollar la autonomía y el análisis ortográfico individual mediante la detección de errores ocultos en un texto narrativo breve, la clasificación de palabras según su combinación consonántica y la redacción original de oraciones con sentido.
+                </p>
+              </div>
+              <div class="moment-info-box yellow-box">
+                <h4>Producto Individual Verificable</h4>
+                <p contenteditable="true" data-field="tp_producto">
+                  <strong>Hoja de trabajo «Expediente de Detective Ortográfico» resuelta:</strong> Boletín escolar con las 8 palabras erróneas subrayadas y reescritas correctamente, cuadro clasificatorio (<em>mb</em> vs. <em>mp</em>) completo y 3 oraciones originales contextualizadas.
+                </p>
+              </div>
+            </div>
+
+            <table class="steps-table">
+              <thead>
+                <tr>
+                  <th style="width: 120px;">Distribución</th>
+                  <th>Instrucciones Claras y Secuencia Individual</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="time-pill">3 min (Min 1–3)</span></td>
+                  <td contenteditable="true" data-field="tp_paso1">
+                    <strong>Entrega de expediente y modelaje:</strong> La docente distribuye la guía impresa «Expediente de Detective Ortográfico», lee las tres misiones y modela la primera pista (<em>cunpleaños → cumpleaños</em>), recordando que no se trata de copiar, sino de investigar y justificar.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="time-pill">8 min (Min 4–11)</span></td>
+                  <td contenteditable="true" data-field="tp_paso2">
+                    <strong>Misión 1 y 2 — Rastreo y clasificación:</strong> Cada estudiante lee la crónica escolar <em>«Un sábado de canpamento»</em> (que contiene 8 errores intencionales como <em>tienpo, sonbrilla, linpio, hanbre, conpañeros, tanbor, inportante, canbio</em> junto con distractores válidos como <em>invierno, puente, cantar</em>), encierra los errores, los corrige y clasifica las palabras en dos columnas: <strong>Familia MB</strong> y <strong>Familia MP</strong>.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="time-pill">4 min (Min 12–15)</span></td>
+                  <td contenteditable="true" data-field="tp_paso3">
+                    <strong>Misión 3 — Producción escrita original:</strong> El estudiante elige dos palabras con <em>mb</em> y dos con <em>mp</em> para redactar tres oraciones originales sobre una actividad real de su familia o colegio, resaltando con crayón amarillo las sílabas <em>mb</em> y <em>mp</em> mientras la docente revisa puesto por puesto.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="moment-meta-row">
+              <div class="moment-info-box">
+                <h4>Recursos</h4>
+                <p contenteditable="true" data-field="tp_recursos">
+                  Guía impresa «Expediente de Detective Ortográfico», lápiz, borrador, crayón amarillo y cuaderno de Comunicación y Lenguaje.
+                </p>
+              </div>
+              <div class="moment-info-box yellow-box">
+                <h4>Criterios de Seguimiento Docente</h4>
+                <p contenteditable="true" data-field="tp_seguimiento">
+                  1) Localiza al menos 7 de los 8 errores sin alterar palabras válidas con <em>nv/nt</em>; 2) Reescribe correctamente con <em>mb</em> y <em>mp</em>; 3) Clasifica cada término en su columna correspondiente; 4) Redacta oraciones coherentes con ortografía cuidada.
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- MOMENTO 3: TC (20 minutos: 3' + 10' + 7') -->
+        <article class="moment-panel active-panel" id="panel-tc">
+          <div class="moment-banner">
+            <div>
+              <span style="font-size: 12px; color: var(--amarillo-institucional); font-weight: 700; text-transform: uppercase;">Momento 3 • Construcción Colaborativa</span>
+              <h3 contenteditable="true" data-field="tc_titulo">TC — Trabajo Cooperativo: «Taller Editorial: Afiches sin Errores de MB y MP»</h3>
+            </div>
+            <div class="moment-time-control">
+              <span>Duración:</span>
+              <input type="number" class="moment-time-input" id="min-tc" value="20" min="1" max="50" />
+              <span>min</span>
+            </div>
+          </div>
+          <div class="moment-content">
+            <div class="moment-meta-row">
+              <div class="moment-info-box">
+                <h4>Propósito y Organización de Equipos</h4>
+                <p contenteditable="true" data-field="tc_proposito">
+                  Aplicar colaborativamente la regla ortográfica en una situación comunicativa real mediante equipos heterogéneos de 4 integrantes conformados previamente por la docente (no por afinidad), con roles definidos para crear una campaña visual de aula.
+                </p>
+              </div>
+              <div class="moment-info-box yellow-box">
+                <h4>Producto Colectivo Concreto</h4>
+                <p contenteditable="true" data-field="tc_producto">
+                  <strong>Afiche Editorial Escolar:</strong> Cartulina ilustrada con un título llamativo, un lema recordatorio de la regla <em>m antes de b y p</em>, y tres consejos útiles para el aula o el recreo que integren al menos 6 palabras destacadas con <em>mb</em> y <em>mp</em>.
+                </p>
+              </div>
+            </div>
+
+            <h4 style="font-size: 13.5px; color: var(--azul-institucional); text-transform: uppercase; margin-bottom: 8px;">Roles Cooperativos Obligatorios (Equipos Heterogéneos de 4 Integrantes)</h4>
+            <div class="roles-grid">
+              <div class="role-card">
+                <strong contenteditable="true" data-field="tc_rol1_t">1. Coordinador/a de tiempo</strong>
+                <span style="font-size: 13px; color: var(--texto-secundario);" contenteditable="true" data-field="tc_rol1_d">Organiza los turnos de palabra, gestiona los bloques de tiempo (3', 10' y 7') y asegura que los cuatro compañeros aporten ideas.</span>
+              </div>
+              <div class="role-card">
+                <strong contenteditable="true" data-field="tc_rol2_t">2. Redactor/a jefe</strong>
+                <span style="font-size: 13px; color: var(--texto-secundario);" contenteditable="true" data-field="tc_rol2_d">Redacta en el borrador y en la cartulina el título, el lema y los tres consejos acordados por el equipo con letra clara y ordenada.</span>
+              </div>
+              <div class="role-card">
+                <strong contenteditable="true" data-field="tc_rol3_t">3. Verificador/a ortográfico</strong>
+                <span style="font-size: 13px; color: var(--texto-secundario);" contenteditable="true" data-field="tc_rol3_d">Audita cada palabra escrita en el afiche, resalta con amarillo las combinaciones <em>mb</em> y <em>mp</em> y garantiza cero errores ortográficos.</span>
+              </div>
+              <div class="role-card">
+                <strong contenteditable="true" data-field="tc_rol4_t">4. Vocero/a creativo</strong>
+                <span style="font-size: 13px; color: var(--texto-secundario);" contenteditable="true" data-field="tc_rol4_d">Diseña los elementos visuales e íconos del afiche y presenta el producto del equipo durante la plenaria final.</span>
+              </div>
+            </div>
+
+            <table class="steps-table">
+              <thead>
+                <tr>
+                  <th style="width: 120px;">Distribución</th>
+                  <th>Instrucciones de Trabajo en Equipo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="time-pill">3 min (Min 1–3)</span></td>
+                  <td contenteditable="true" data-field="tc_paso1">
+                    <strong>Conformación de equipos y asignación de retos:</strong> La docente organiza los equipos heterogéneos de 4 estudiantes, entrega los gafetes de rol, una cartulina y un sobre con 6 palabras disparadoras (ej. <em>ambiente, limpiar, compartir, compañeros, siempre, sombra</em>).
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="time-pill">10 min (Min 4–13)</span></td>
+                  <td contenteditable="true" data-field="tc_paso2">
+                    <strong>Planificación y elaboración del afiche:</strong> Cada equipo acuerda un tema escolar (cuidado del ambiente, convivencia en el recreo o limpieza del aula), redacta un lema y tres consejos usando las 6 palabras con <em>mb/mp</em>, y diagrama el afiche en la cartulina.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="time-pill">7 min (Min 14–20)</span></td>
+                  <td contenteditable="true" data-field="tc_paso3">
+                    <strong>Auditoría cruzada y ensayo de presentación:</strong> El Verificador/a ortográfico revisa cada palabra con apoyo de todo el equipo, subrayan en amarillo las sílabas <em>mb</em> y <em>mp</em> y ensayan la exposición breve de 45 segundos del Vocero/a creativo.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="moment-info-box">
+              <h4>Recursos, Criterios de Evaluación y Hábito Relacionado</h4>
+              <p contenteditable="true" data-field="tc_criterios">
+                <strong>Recursos:</strong> Cartulina o papel bond, sobres con tarjetas léxicas, marcadores azul y amarillo, crayones y cinta adhesiva.<br/>
+                <strong>Criterios:</strong> Cumplimiento efectivo de los 4 roles, inclusión de al menos 6 palabras con <em>mb/mp</em> sin errores, coherencia comunicativa de los consejos y limpieza visual.<br/>
+                <strong>Hábito 5 y Hábito 6 (Sinergizar):</strong> Escuchan las propuestas de todos los integrantes antes de escribir y suman sus talentos de redacción, revisión y diseño en un producto común.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <!-- MOMENTO 4: P (7 minutos: 4' + 3') -->
+        <article class="moment-panel active-panel" id="panel-p">
+          <div class="moment-banner">
+            <div>
+              <span style="font-size: 12px; color: var(--amarillo-institucional); font-weight: 700; text-transform: uppercase;">Momento 4 • Socialización y Cierre</span>
+              <h3 contenteditable="true" data-field="p_titulo">P — Plenaria: «Ronda de Corrección Express y Ticket de Salida»</h3>
+            </div>
+            <div class="moment-time-control">
+              <span>Duración:</span>
+              <input type="number" class="moment-time-input" id="min-p" value="7" min="1" max="50" />
+              <span>min</span>
+            </div>
+          </div>
+          <div class="moment-content">
+            <div class="moment-meta-row">
+              <div class="moment-info-box">
+                <h4>Propósito de Cierre</h4>
+                <p contenteditable="true" data-field="p_proposito">
+                  Socializar los afiches editoriales en el mural del aula, contrastar ejemplos reales de uso correcto de <em>mb</em> y <em>mp</em>, formular la conclusión colectiva de la clase y verificar individualmente el logro de aprendizaje.
+                </p>
+              </div>
+              <div class="moment-info-box yellow-box">
+                <h4>Estrategia de Evaluación de Salida</h4>
+                <p contenteditable="true" data-field="p_estrategia">
+                  <strong>Ticket de Salida («Sello Editorial»):</strong> Cada estudiante recibe una tarjeta donde debe: 1) elegir la forma correcta entre dos pares (<em>invierno/imbierno</em> y <em>anbulancia/ambulancia</em>), 2) corregir la oración <em>«Mi conpañero toca el tanbor»</em>, y 3) explicar en una línea por qué escribió <strong>m</strong>.
+                </p>
+              </div>
+            </div>
+
+            <table class="steps-table">
+              <thead>
+                <tr>
+                  <th style="width: 120px;">Distribución</th>
+                  <th>Pasos de Plenaria y Cierre</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="time-pill">4 min (Min 1–4)</span></td>
+                  <td contenteditable="true" data-field="p_paso1">
+                    <strong>Ronda de Corrección Express y galería mural:</strong> Los equipos pegan sus afiches en la pizarra; dos voceros leen su lema y señalan sus palabras con <em>mb/mp</em>, mientras el grupo valida con pulgar arriba su ortografía y la docente retroalimenta los aciertos clave.
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="time-pill">3 min (Min 5–7)</span></td>
+                  <td contenteditable="true" data-field="p_paso2">
+                    <strong>Resolución del Ticket de Salida:</strong> Cada estudiante completa individualmente su tarjeta «Sello Editorial» y la entrega en el buzón de salida antes de concluir los 50 minutos de clase.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="moment-info-box">
+              <h4>Recursos y Evidencia Final</h4>
+              <p contenteditable="true" data-field="p_evidencia">
+                <strong>Recursos:</strong> Pizarra, cinta adhesiva, tarjetas impresas de Ticket de Salida «Sello Editorial» y lápiz.<br/>
+                <strong>Evidencia final:</strong> Afiches editoriales publicados en el mural del aula y Tickets de Salida individuales resueltos.
+              </p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- 6. RECURSOS DIDÁCTICOS -->
+    <section class="card" id="sec-6">
+      <div class="card-header">
+        <h2><span class="section-num">6</span> Recursos Didácticos (Aula Presencial)</h2>
+      </div>
+      <div class="card-body">
+        <div class="resources-grid">
+          <div class="resource-item">
+            <div class="resource-icon">1</div>
+            <div>
+              <strong style="color: var(--azul-institucional);" contenteditable="true" data-field="rec1_t">Guía impresa «Expediente de Detective Ortográfico»</strong>
+              <p style="font-size: 13.5px; color: var(--texto-secundario);" contenteditable="true" data-field="rec1_d">Hoja de trabajo individual con crónica escolar para detectar errores, cuadro clasificatorio <em>mb/mp</em> y espacio de redacción.</p>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">2</div>
+            <div>
+              <strong style="color: var(--azul-institucional);" contenteditable="true" data-field="rec2_t">Tarjetas didácticas léxicas y gafetes de rol</strong>
+              <p style="font-size: 13.5px; color: var(--texto-secundario);" contenteditable="true" data-field="rec2_d">Tarjetas ilustradas para la activación inicial y sobres con bancos de palabras <em>mb/mp</em> para cada equipo cooperativo.</p>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">3</div>
+            <div>
+              <strong style="color: var(--azul-institucional);" contenteditable="true" data-field="rec3_t">Cartulinas o pliegos de papel bond</strong>
+              <p style="font-size: 13.5px; color: var(--texto-secundario);" contenteditable="true" data-field="rec3_d">Soporte físico para diseñar y publicar los afiches editoriales escolares en el mural del salón de clases.</p>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">4</div>
+            <div>
+              <strong style="color: var(--azul-institucional);" contenteditable="true" data-field="rec4_t">Pizarra, marcadores y crayones institucionales</strong>
+              <p style="font-size: 13.5px; color: var(--texto-secundario);" contenteditable="true" data-field="rec4_d">Marcadores de pizarra y crayones azul y amarillo para resaltar combinaciones bilabiales <em>mb</em> y <em>mp</em>.</p>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">5</div>
+            <div>
+              <strong style="color: var(--azul-institucional);" contenteditable="true" data-field="rec5_t">Tickets de Salida impresos («Sello Editorial»)</strong>
+              <p style="font-size: 13.5px; color: var(--texto-secundario);" contenteditable="true" data-field="rec5_d">Tarjetas breves de cierre individual para verificar la discriminación entre <em>mb/mp</em> y otras combinaciones como <em>nv</em>.</p>
+            </div>
+          </div>
+          <div class="resource-item">
+            <div class="resource-icon">6</div>
+            <div>
+              <strong style="color: var(--azul-institucional);" contenteditable="true" data-field="rec6_t">Cuaderno y libro de texto de Comunicación y Lenguaje</strong>
+              <p style="font-size: 13.5px; color: var(--texto-secundario);" contenteditable="true" data-field="rec6_d">Materiales de consulta y registro personal disponibles de forma permanente en el aula presencial.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. EVALUACIÓN DEL APRENDIZAJE -->
+    <section class="card" id="sec-7">
+      <div class="card-header">
+        <h2><span class="section-num">7</span> Evaluación del Aprendizaje (Inicial, Formativa y Sumativa)</h2>
+      </div>
+      <div class="card-body">
+        <div class="eval-stages">
+          <div class="eval-stage-card">
+            <span class="eval-tag tag-formativa">Evidencia Formativa • Evaluación Inicial</span>
+            <h3 style="font-size: 15px; color: var(--azul-institucional); margin-bottom: 6px;" contenteditable="true" data-field="ev_ini_t">Diagnóstico en IM (8 min)</h3>
+            <p style="font-size: 13.8px; color: var(--texto-secundario);" contenteditable="true" data-field="ev_ini_d">
+              Observación directa de las respuestas orales durante «El Radar de los Labios Juntos» y la corrección colectiva del titular en la pizarra para identificar saberes previos sobre el uso de <em>m</em> y <em>n</em> (evidencia formativa diagnóstica).
+            </p>
+          </div>
+
+          <div class="eval-stage-card">
+            <span class="eval-tag tag-formativa">Evidencia Formativa • Evaluación de Proceso</span>
+            <h3 style="font-size: 15px; color: var(--azul-institucional); margin-bottom: 6px;" contenteditable="true" data-field="ev_for_t">Acompañamiento en TP y TC (35 min)</h3>
+            <p style="font-size: 13.8px; color: var(--texto-secundario);" contenteditable="true" data-field="ev_for_d">
+              Revisión individual del «Expediente de Detective Ortográfico» y monitoreo del desempeño de roles y auditoría entre pares durante el «Taller Editorial» como evidencias formativas de mejora continua.
+            </p>
+          </div>
+
+          <div class="eval-stage-card">
+            <span class="eval-tag tag-calificada">Actividad Calificada • Evaluación Sumativa</span>
+            <h3 style="font-size: 15px; color: var(--azul-institucional); margin-bottom: 6px;" contenteditable="true" data-field="ev_sum_t">Afiche Editorial + Ticket de Salida</h3>
+            <p style="font-size: 13.8px; color: var(--texto-secundario);" contenteditable="true" data-field="ev_sum_d">
+              Valoración sumativa mediante la lista de cotejo institucional (10 puntos) sobre la aplicación efectiva de <em>m antes de b y p</em> en el producto colaborativo y el Ticket de Salida individual, sin asignar porcentajes arbitrarios de unidad.
+            </p>
+          </div>
+        </div>
+
+        <div class="feedback-box">
+          <strong style="color: var(--azul-institucional); display: block; margin-bottom: 4px;">Retroalimentación Específica y Oportunidad de Mejora:</strong>
+          <p style="font-size: 14px; color: var(--texto-oscuro);" contenteditable="true" data-field="ev_retro">
+            Cuando un estudiante o equipo confunda <em>mb/mp</em> con <em>nv</em> (por ejemplo, escribiendo <em>imbierno</em>) o deje una <em>n</em> antes de <em>b/p</em>, la docente aplica la prueba articulatoria de labios juntos frente a dientes superiores en el labio inferior, y otorga una oportunidad inmediata de autocorrección en el borrador o afiche antes de su entrega final.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. INSTRUMENTO DE EVALUACIÓN INTERACTIVO -->
+    <section class="card" id="sec-8">
+      <div class="card-header primary-header">
+        <h2><span class="section-num">8</span> Instrumento de Evaluación Interactivo — Lista de Cotejo</h2>
+        <span style="font-size: 12.5px; color: var(--amarillo-institucional); font-weight: 700;">Cálculo automático sobre 10 puntos</span>
+      </div>
+      <div class="card-body">
+
+        <div class="rubric-controls">
+          <div class="student-eval-field">
+            <label for="eval-student-name">Estudiante / Equipo evaluado:</label>
+            <input type="text" id="eval-student-name" class="student-eval-input" placeholder="Ej. Equipo 3 — Sofía Méndez" />
+          </div>
+          <div class="score-display">
+            <div class="score-badge">Puntaje: <span id="rubric-score">0</span> / 10 pts</div>
+            <div class="level-badge" id="rubric-level">Sin evaluar</div>
+            <button type="button" class="btn btn-outline no-print" id="btn-clear-rubric" style="padding: 6px 10px; font-size: 12.5px;">
+              Reiniciar marcas
+            </button>
+          </div>
+        </div>
+
+        <table class="checklist-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">N.°</th>
+              <th>Criterio Observable Alineado al Logro de Aprendizaje</th>
+              <th class="center" style="width: 90px;">Sí<br/>(2 pts)</th>
+              <th class="center" style="width: 115px;">En proceso<br/>(1 pt)</th>
+              <th class="center" style="width: 90px;">No<br/>(0 pts)</th>
+            </tr>
+          </thead>
+          <tbody id="rubric-tbody">
+            <tr>
+              <td><strong>1</strong></td>
+              <td contenteditable="true" data-field="crit_1">
+                <strong>Detección y corrección ortográfica (TP):</strong> Identifica y corrige al menos 7 de los 8 errores de <em>nb/np</em> en la crónica escolar sin modificar palabras válidas con <em>nv/nt</em>.
+              </td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit1" value="2" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit1" value="1" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit1" value="0" /></td>
+            </tr>
+            <tr>
+              <td><strong>2</strong></td>
+              <td contenteditable="true" data-field="crit_2">
+                <strong>Clasificación y producción individual (TP):</strong> Clasifica correctamente las palabras en las columnas <em>MB</em> y <em>MP</em> y redacta 3 oraciones originales coherentes aplicando la regla.
+              </td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit2" value="2" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit2" value="1" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit2" value="0" /></td>
+            </tr>
+            <tr>
+              <td><strong>3</strong></td>
+              <td contenteditable="true" data-field="crit_3">
+                <strong>Aplicación en el Afiche Editorial (TC):</strong> Incorpora correctamente al menos 6 palabras con <em>mb</em> y <em>mp</em> resaltadas en un mensaje escolar claro, creativo y libre de errores ortográficos.
+              </td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit3" value="2" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit3" value="1" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit3" value="0" /></td>
+            </tr>
+            <tr>
+              <td><strong>4</strong></td>
+              <td contenteditable="true" data-field="crit_4">
+                <strong>Ticket de Salida «Sello Editorial» (P):</strong> Discrimina adecuadamente <em>mb/mp</em> frente a <em>nv</em>, corrige la oración propuesta y justifica con sus palabras el uso de la <strong>m</strong>.
+              </td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit4" value="2" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit4" value="1" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit4" value="0" /></td>
+            </tr>
+            <tr>
+              <td><strong>5</strong></td>
+              <td contenteditable="true" data-field="crit_5">
+                <strong>Trabajo cooperativo y Hábitos Montano (TC–P):</strong> Cumple con responsabilidad su rol asignado en el equipo heterogéneo y evidencia los Hábitos 2, 5 y 6 durante la sesión.
+              </td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit5" value="2" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit5" value="1" /></td>
+              <td class="center"><input type="radio" class="radio-eval" name="crit5" value="0" /></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="feedback-box" style="margin-top: 14px;">
+          <strong style="color: var(--azul-institucional); display: block; margin-bottom: 4px;">Retroalimentación y Oportunidad de Mejora Sugerida:</strong>
+          <p id="rubric-feedback-text" style="font-size: 14px; color: var(--texto-oscuro);" contenteditable="true" data-field="rubric_feedback">
+            Seleccione una opción en cada criterio para calcular el puntaje automáticamente. Oportunidad de mejora sugerida: verificar cada palabra antes de <em>b</em> o <em>p</em> mediante la lectura pausada y el subrayado preventivo en amarillo.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. OBSERVACIONES Y REFLEXIÓN DOCENTE -->
+    <section class="card" id="sec-9">
+      <div class="card-header">
+        <h2><span class="section-num">9</span> Observaciones Durante la Clase y Reflexión Docente Post-Sesión</h2>
+      </div>
+      <div class="card-body">
+        <div class="obs-grid">
+          <div class="obs-box">
+            <h3>Observaciones Durante la Clase (IM – TP – TC – P)</h3>
+            <div class="obs-area" contenteditable="true" data-field="obs_clase">
+              Registre aquí las evidencias observadas en el aula: participación en el experimento fonético, desempeño de los equipos heterogéneos y palabras que presentaron mayor reto...
+            </div>
+          </div>
+          <div class="obs-box">
+            <h3>Reflexión Docente Post-Sesión y Ajustes</h3>
+            <div class="obs-area" contenteditable="true" data-field="obs_reflexion">
+              Anote aquí su valoración sobre el cumplimiento de los 50 minutos, la efectividad del «Expediente de Detective Ortográfico» y las acciones de refuerzo para el siguiente plan de unidad...
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL PERSONALIZADO DE CONFIRMACIÓN DE REINICIO (SIN window.confirm / alert) -->
+  <div class="modal-backdrop no-print" id="reset-modal" role="dialog" aria-modal="true" aria-labelledby="reset-modal-title">
+    <div class="modal-card">
+      <div class="modal-body">
+        <h3 id="reset-modal-title">Restablecer Plan N.° 12</h3>
+        <p>
+          ¿Desea restaurar todos los campos editables, tiempos y criterios de evaluación a los valores predeterminados de «M antes de B y P»?
+        </p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" id="btn-cancel-reset">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="btn-confirm-reset">Sí, restablecer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICACIÓN FLOTANTE -->
+  <div class="toast" id="toast-msg" role="status" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const STORAGE_KEY = "montano_plan_12_m_antes_bp";
+      const editableFields = document.querySelectorAll("[data-field]");
+      const timeInputs = {
+        im: document.getElementById("min-im"),
+        tp: document.getElementById("min-tp"),
+        tc: document.getElementById("min-tc"),
+        p:  document.getElementById("min-p")
+      };
+
+      const toastEl = document.getElementById("toast-msg");
+      const saveStatus = document.getElementById("save-status");
+      let toastTimer = null;
+
+      function showToast(message) {
+        toastEl.textContent = message;
+        toastEl.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toastEl.classList.remove("show");
+        }, 2800);
+      }
+
+      // Capturar estado actual o predeterminado
+      function captureCurrentState() {
+        const fields = {};
+        editableFields.forEach((el) => {
+          fields[el.dataset.field] = el.innerHTML;
+        });
+
+        const skills = {};
+        document.querySelectorAll("[data-skill]").forEach((cb) => {
+          skills[cb.dataset.skill] = cb.checked;
+        });
+
+        const rubric = {};
+        for (let i = 1; i <= 5; i++) {
+          const checked = document.querySelector(`input[name="crit${i}"]:checked`);
+          rubric[`crit${i}`] = checked ? checked.value : null;
+        }
+
+        return {
+          fields,
+          times: {
+            im: timeInputs.im.value,
+            tp: timeInputs.tp.value,
+            tc: timeInputs.tc.value,
+            p:  timeInputs.p.value
+          },
+          skills,
+          studentName: document.getElementById("eval-student-name").value,
+          rubric
+        };
+      }
+
+      const defaultState = captureCurrentState();
+
+      function applyState(state) {
+        if (!state) return;
+        if (state.fields) {
+          editableFields.forEach((el) => {
+            const key = el.dataset.field;
+            if (Object.prototype.hasOwnProperty.call(state.fields, key)) {
+              el.innerHTML = state.fields[key];
+            }
+          });
+        }
+        if (state.times) {
+          timeInputs.im.value = state.times.im || 8;
+          timeInputs.tp.value = state.times.tp || 15;
+          timeInputs.tc.value = state.times.tc || 20;
+          timeInputs.p.value  = state.times.p  || 7;
+          recalculateTimes();
+        }
+        if (state.skills) {
+          document.querySelectorAll("[data-skill]").forEach((cb) => {
+            const key = cb.dataset.skill;
+            if (Object.prototype.hasOwnProperty.call(state.skills, key)) {
+              cb.checked = !!state.skills[key];
+              cb.closest(".skill-item").classList.toggle("inactive-skill", !cb.checked);
+            }
+          });
+        }
+        if (typeof state.studentName === "string") {
+          document.getElementById("eval-student-name").value = state.studentName;
+        }
+        if (state.rubric) {
+          for (let i = 1; i <= 5; i++) {
+            const val = state.rubric[`crit${i}`];
+            document.querySelectorAll(`input[name="crit${i}"]`).forEach((radio) => {
+              radio.checked = (val !== null && radio.value === String(val));
+            });
+          }
+          calculateRubricScore();
+        }
+      }
+
+      // Persistencia automática y manual en localStorage
+      function saveToLocalStorage(notify = false) {
+        try {
+          const current = captureCurrentState();
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
+          const now = new Date();
+          const hh = String(now.getHours()).padStart(2, "0");
+          const mm = String(now.getMinutes()).padStart(2, "0");
+          saveStatus.textContent = `Guardado automáticamente (${hh}:${mm})`;
+          if (notify) {
+            showToast("Planificación guardada correctamente en este navegador.");
+          }
+        } catch (err) {
+          saveStatus.textContent = "Edición activa (almacenamiento local no disponible)";
+        }
+      }
+
+      function loadFromLocalStorage() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            applyState(JSON.parse(raw));
+            saveStatus.textContent = "Datos recuperados de su última sesión";
+          }
+        } catch (err) {
+          // Continuar con valores predeterminados
+        }
+      }
+
+      // Cálculo dinámico de los 50 minutos
+      function recalculateTimes() {
+        const im = Math.max(0, parseInt(timeInputs.im.value, 10) || 0);
+        const tp = Math.max(0, parseInt(timeInputs.tp.value, 10) || 0);
+        const tc = Math.max(0, parseInt(timeInputs.tc.value, 10) || 0);
+        const p  = Math.max(0, parseInt(timeInputs.p.value, 10)  || 0);
+        const total = im + tp + tc + p;
+
+        document.getElementById("total-minutes-display").textContent = total;
+        document.getElementById("breakdown-display").textContent = `IM ${im}' • TP ${tp}' • TC ${tc}' • P ${p}'`;
+        document.getElementById("tab-total-badge").textContent = `${total} min`;
+        document.getElementById("tab-im-badge").textContent = `${im} min`;
+        document.getElementById("tab-tp-badge").textContent = `${tp} min`;
+        document.getElementById("tab-tc-badge").textContent = `${tc} min`;
+        document.getElementById("tab-p-badge").textContent  = `${p} min`;
+
+        const safeTotal = total > 0 ? total : 1;
+        document.getElementById("bar-im").style.width = `${(im / safeTotal) * 100}%`;
+        document.getElementById("bar-tp").style.width = `${(tp / safeTotal) * 100}%`;
+        document.getElementById("bar-tc").style.width = `${(tc / safeTotal) * 100}%`;
+        document.getElementById("bar-p").style.width  = `${(p / safeTotal) * 100}%`;
+
+        const warningEl = document.getElementById("time-warning");
+        warningEl.style.display = (total !== 50) ? "inline-block" : "none";
+      }
+
+      Object.values(timeInputs).forEach((input) => {
+        input.addEventListener("input", () => {
+          recalculateTimes();
+          saveToLocalStorage(false);
+        });
+      });
+
+      // Navegación por pestañas entre IM, TP, TC, P y Ver Todos
+      const tabButtons = document.querySelectorAll(".tab-btn");
+      const momentPanels = document.querySelectorAll(".moment-panel");
+
+      tabButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          tabButtons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          const target = btn.dataset.target;
+          momentPanels.forEach((panel) => {
+            if (target === "all" || panel.id === target) {
+              panel.classList.add("active-panel");
+            } else {
+              panel.classList.remove("active-panel");
+            }
+          });
+        });
+      });
+
+      // Checkboxes de competencias clave y blandas
+      document.querySelectorAll("[data-skill]").forEach((cb) => {
+        cb.addEventListener("change", () => {
+          cb.closest(".skill-item").classList.toggle("inactive-skill", !cb.checked);
+          saveToLocalStorage(false);
+        });
+      });
+
+      // Cálculo automático de lista de cotejo (0 a 10 pts) con retroalimentación dinámica
+      function calculateRubricScore() {
+        let totalScore = 0;
+        let answered = 0;
+        const weakCriteria = [];
+
+        const criteriaLabels = {
+          1: "detección y corrección de nb/np en textos",
+          2: "clasificación y redacción individual de oraciones con mb/mp",
+          3: "uso ortográfico correcto en el afiche editorial",
+          4: "discriminación entre mb/mp y nv en el Ticket de Salida",
+          5: "desempeño de rol cooperativo y Hábitos Montano"
+        };
+
+        for (let i = 1; i <= 5; i++) {
+          const selected = document.querySelector(`input[name="crit${i}"]:checked`);
+          if (selected) {
+            const val = parseInt(selected.value, 10);
+            totalScore += val;
+            answered++;
+            if (val < 2) {
+              weakCriteria.push(criteriaLabels[i]);
+            }
+          }
+        }
+
+        document.getElementById("rubric-score").textContent = totalScore;
+        const levelEl = document.getElementById("rubric-level");
+        const fbEl = document.getElementById("rubric-feedback-text");
+
+        if (answered === 0) {
+          levelEl.textContent = "Sin evaluar";
+          return;
+        }
+
+        const mejoraDetalle = weakCriteria.length > 0
+          ? ` Oportunidad de mejora específica: reforzar ${weakCriteria.join("; ")} mediante la lectura pausada y la revisión preventiva con crayón amarillo antes de cada b o p.`
+          : " ¡Excelente dominio ortográfico! Puede asumir el reto de mentoría entre pares para apoyar a compañeros en la revisión de borradores.";
+
+        if (totalScore >= 9) {
+          levelEl.textContent = "Logro Destacado";
+          fbEl.textContent = `Desempeño sobresaliente (${totalScore}/10 pts): aplica con precisión la regla m antes de b y p tanto en la detección de errores como en la producción escrita colaborativa e individual.${mejoraDetalle}`;
+        } else if (totalScore >= 7) {
+          levelEl.textContent = "Logro Satisfactorio";
+          fbEl.textContent = `Buen avance (${totalScore}/10 pts): comprende y aplica la regla ortográfica en la mayoría de situaciones comunicativas.${mejoraDetalle}`;
+        } else if (totalScore >= 5) {
+          levelEl.textContent = "En Proceso";
+          fbEl.textContent = `Desempeño en desarrollo (${totalScore}/10 pts): reconoce la regla oralmente, pero requiere mayor atención al revisar sus textos escritos.${mejoraDetalle}`;
+        } else {
+          levelEl.textContent = "Requiere Apoyo";
+          fbEl.textContent = `Requiere acompañamiento cercano (${totalScore}/10 pts): retomar la práctica guiada con tarjetas ilustradas de palabras con mb y mp y la prueba articulatoria de labios juntos.${mejoraDetalle}`;
+        }
+      }
+
+      document.querySelectorAll(".radio-eval").forEach((radio) => {
+        radio.addEventListener("change", () => {
+          calculateRubricScore();
+          saveToLocalStorage(false);
+        });
+      });
+
+      document.getElementById("btn-clear-rubric").addEventListener("click", () => {
+        document.querySelectorAll(".radio-eval").forEach((r) => { r.checked = false; });
+        document.getElementById("eval-student-name").value = "";
+        calculateRubricScore();
+        saveToLocalStorage(false);
+        showToast("Marcas de la lista de cotejo reiniciadas.");
+      });
+
+      // Guardado al editar cualquier campo
+      editableFields.forEach((el) => {
+        el.addEventListener("input", () => saveToLocalStorage(false));
+      });
+      document.getElementById("eval-student-name").addEventListener("input", () => saveToLocalStorage(false));
+
+      // Botones principales de barra superior
+      document.getElementById("btn-save").addEventListener("click", () => saveToLocalStorage(true));
+
+      document.getElementById("btn-print").addEventListener("click", () => {
+        window.print();
+      });
+
+      // Exportar archivo HTML completo con las ediciones actuales
+      document.getElementById("btn-export").addEventListener("click", () => {
+        const docClone = document.documentElement.cloneNode(true);
+
+        docClone.querySelector("#min-im").setAttribute("value", timeInputs.im.value);
+        docClone.querySelector("#min-tp").setAttribute("value", timeInputs.tp.value);
+        docClone.querySelector("#min-tc").setAttribute("value", timeInputs.tc.value);
+        docClone.querySelector("#min-p").setAttribute("value", timeInputs.p.value);
+
+        const studentVal = document.getElementById("eval-student-name").value;
+        docClone.querySelector("#eval-student-name").setAttribute("value", studentVal);
+
+        docClone.querySelectorAll("[data-skill]").forEach((cb) => {
+          const orig = document.querySelector(`[data-skill="${cb.dataset.skill}"]`);
+          if (orig && orig.checked) {
+            cb.setAttribute("checked", "checked");
+          } else {
+            cb.removeAttribute("checked");
+          }
+        });
+
+        for (let i = 1; i <= 5; i++) {
+          const checked = document.querySelector(`input[name="crit${i}"]:checked`);
+          docClone.querySelectorAll(`input[name="crit${i}"]`).forEach((r) => {
+            if (checked && r.value === checked.value) {
+              r.setAttribute("checked", "checked");
+            } else {
+              r.removeAttribute("checked");
+            }
+          });
+        }
+
+        const htmlString = "<!DOCTYPE html>\n" + docClone.outerHTML;
+        const blob = new Blob([htmlString], { type: "text/html;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        const materia = (document.querySelector('[data-field="materia"]').textContent || "Clase").trim().replace(/\s+/g, "_");
+        const planNum = (document.querySelector('[data-field="num_plan"]').textContent || "12").trim();
+        link.href = url;
+        link.download = `Plan_Montano_${materia}_Plan${planNum}.html`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        showToast("Archivo HTML exportado con todos sus cambios.");
+      });
+
+      // Modal personalizado de confirmación de reinicio (sin window.confirm / alert)
+      const resetModal = document.getElementById("reset-modal");
+      document.getElementById("btn-reset").addEventListener("click", () => {
+        resetModal.classList.add("open");
+      });
+
+      document.getElementById("btn-cancel-reset").addEventListener("click", () => {
+        resetModal.classList.remove("open");
+      });
+
+      document.getElementById("btn-confirm-reset").addEventListener("click", () => {
+        localStorage.removeItem(STORAGE_KEY);
+        applyState(defaultState);
+        resetModal.classList.remove("open");
+        saveStatus.textContent = "Valores predeterminados restaurados";
+        showToast("Planificación restablecida a su versión original.");
+      });
+
+      // Inicialización al cargar
+      loadFromLocalStorage();
+      recalculateTimes();
+      calculateRubricScore();
+    })();
+  </script>
+</body>
+</html>
